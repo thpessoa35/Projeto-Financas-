@@ -20,7 +20,7 @@ namespace getBySaidaUseCase
         {
             try
             {
-                var debits = await _debitRepository.FindBySaida(dataDto.iduser, dataDto.StartDate, dataDto.EndDate);
+                var debits = await _debitRepository.FindBySaida(dataDto.StartDate, dataDto.EndDate);
 
                 var sumValue = new SumValue();
 

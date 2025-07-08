@@ -1,0 +1,42 @@
+﻿version: '3.8'
+
+services:
+  backend_Tr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./Assets:/app/assets
+    image: backend-tr
+    container_name: backend-tr
+    ports:
+      - "5027:5027"
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:15
+    container_name: postgres-financas
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 701226
+      POSTGRES_DB: financas
+    ports:
+      - "5432:5432"
+    volumes:
+      - tomatecereja_postgres-data:/var/lib/postgresql/data
+  
+  front:
+    image: front-tomate-cereja
+    container_name: front-end
+    build:
+      context: ../TomateCerejaFront/Front-Financas-1/my-react-app
+      dockerfile: Dockerfile
+    depends_on:
+      - backend_Tr
+    ports:
+      - "5173:5173"
+volumes:
+  tomatecereja_postgres-data:
+    external: true
+

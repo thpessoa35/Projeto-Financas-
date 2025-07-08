@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "E:\\EstudosC#\\ProjectFinancas\\ProjectFinancas\\ProjectFinancas.csproj": {}
+    "D:\\ProjetosTomateCereja\\TomateCereja\\ProjectFinancas.csproj": {}
   },
   "projects": {
-    "E:\\EstudosC#\\ProjectFinancas\\ProjectFinancas\\ProjectFinancas.csproj": {
+    "D:\\ProjetosTomateCereja\\TomateCereja\\ProjectFinancas.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\EstudosC#\\ProjectFinancas\\ProjectFinancas\\ProjectFinancas.csproj",
+        "projectUniqueName": "D:\\ProjetosTomateCereja\\TomateCereja\\ProjectFinancas.csproj",
         "projectName": "ProjectFinancas",
-        "projectPath": "E:\\EstudosC#\\ProjectFinancas\\ProjectFinancas\\ProjectFinancas.csproj",
+        "projectPath": "D:\\ProjetosTomateCereja\\TomateCereja\\ProjectFinancas.csproj",
         "packagesPath": "C:\\Users\\thiag\\.nuget\\packages\\",
-        "outputPath": "E:\\EstudosC#\\ProjectFinancas\\ProjectFinancas\\obj\\",
+        "outputPath": "D:\\ProjetosTomateCereja\\TomateCereja\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\thiag\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\thiag\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,7 +32,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -88,6 +87,10 @@
             "Npgsql": {
               "target": "Package",
               "version": "[8.0.2, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [
@@ -101,6 +104,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -109,7 +130,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\thiag\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

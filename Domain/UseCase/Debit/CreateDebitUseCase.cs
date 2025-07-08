@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
+
 using debit;
 using idebitRepository;
+using ProjectFinancas.Domain.ValueObject;
 
 public class CreateDebitUseCase
 {
@@ -19,20 +19,14 @@ public class CreateDebitUseCase
             var validate = new TransactionType(data.Type);
 
             decimal valorProcessado = validate.ProcessTransaction(data.Value);
-
-            var newDebit = new Debit(
-                iduser: data.Iduser,
-                value: valorProcessado,
-                description: data.Description,
-                type: data.Type,
-                module: data.Module
-            );
-
+           
+            var newDebit = Debit.Create(valorProcessado, data.Description, data.Type, "ae5138d7-4d5b-475a-8584-17a62b5683a8", DateTime.Now, data.Module);
+    
             await _IdebitRepository.create(newDebit);
         }
         catch (Exception ex)
         {
-            
+            Console.WriteLine(ex.Message);
             throw new Exception("Erro ao criar transação", ex);
         }
     }

@@ -18,17 +18,17 @@ namespace debitDbRepository
             using (var connection = _connectionPostgres.GetConnection())
             {
                 try
-                {
+                {   
                     await connection.OpenAsync();
-
+                    
                     var query = "INSERT INTO debit(value, description, type, idUser, module) VALUES ( @Value, @Description, @Type, @IdUser, @Module)";
-
+                    
                     await connection.ExecuteAsync(query, debit);
                 }
-                catch (Exception error)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("error:", error);
-                    throw new Exception("Erro ao inserir dados na tabela", error);
+                    Console.WriteLine("error:" + ex.Message);
+                    throw new Exception("Erro ao inserir dados na tabela", ex);
                 }
             }
         }
@@ -52,7 +52,7 @@ namespace debitDbRepository
             }
         }
 
-        public async Task<IEnumerable<Debit>> FindBySaida(string iduser, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Debit>> FindBySaida( DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -61,10 +61,10 @@ namespace debitDbRepository
                 {
                     await connection.OpenAsync();
 
-                    var query = "SELECT d.id, d.iduser, d.value, d.description, d.date, d.type FROM debit AS d INNER JOIN users AS u ON d.idUser = u.id WHERE d.type = 'Saida' AND  u.id = @iduser AND d.date BETWEEN @startDate AND @endDate";
+                    var query = "SELECT d.id, d.iduser, d.value, d.description, d.date, d.type FROM debit AS d INNER JOIN users AS u ON d.idUser = u.id WHERE d.type = 'Saida' AND  u.id = 'ae5138d7-4d5b-475a-8584-17a62b5683a8' AND d.date BETWEEN @startDate AND @endDate";
 
 
-                    return await connection.QueryAsync<Debit>(query, new { iduser, startDate, endDate });
+                    return await connection.QueryAsync<Debit>(query, new { startDate, endDate });
                 }
             }
             catch (Exception error)
@@ -72,7 +72,7 @@ namespace debitDbRepository
                 throw new Exception("Erro ao inserir dados na tabela", error);
             }
         }
-        public async Task<IEnumerable<Debit>> FindByEntrada(string iduser, DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<Debit>> FindByEntrada(DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -81,9 +81,9 @@ namespace debitDbRepository
                 {
                     await connection.OpenAsync();
 
-                    var query = "SELECT d.id, d.iduser, d.value, d.description, d.date, d.type, d.module FROM debit AS d INNER JOIN users AS u ON d.idUser = u.id WHERE d.type = 'Entrada' AND u.id = @iduser AND d.date BETWEEN @startDate AND @endDate";
+                    var query = "SELECT d.id, d.iduser, d.value, d.description, d.date, d.type, d.module FROM debit AS d INNER JOIN users AS u ON d.idUser = u.id WHERE d.type = 'Entrada' AND u.id = 'ae5138d7-4d5b-475a-8584-17a62b5683a8' AND d.date BETWEEN @startDate AND @endDate";
 
-                    return await connection.QueryAsync<Debit>(query, new { iduser, startDate, endDate });
+                    return await connection.QueryAsync<Debit>(query, new { startDate, endDate });
                 }
             }
             catch (Exception error)
@@ -150,7 +150,29 @@ namespace debitDbRepository
             }
         }
 
+        public async Task<IEnumerable<Debit>> GetALL()
+        {
+            using (var connection = _connectionPostgres.GetConnection())
+            {
+                try
+                {
+                    await connection.OpenAsync();
 
+                    const string query = "SELECT * FROM debit";
+
+
+                    var result = await connection.QueryAsync<Debit>(query);
+
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao buscar dados na tabela", ex);
+                }
+            }
+        }
+        
     }
 }
 

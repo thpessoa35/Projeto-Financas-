@@ -1,8 +1,8 @@
 ﻿using createUserUseCase;
-using iUserRepository;
 using Moq;
 using NUnit.Framework;
 using ProjectFinancas.Controllers.Dtos;
+using ProjectFinancas.Domain.Repositories;
 using ProjectFinancas.Domain.Validations.UserCase;
 using user;
 

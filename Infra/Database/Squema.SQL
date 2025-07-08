@@ -26,5 +26,10 @@ Create Table users(
     date TIMESTAMP DEFAULT now()
 );
 
-
+Create table clients(
+    id Serial PRIMARY KEY 
+    name varchar(100),
+    payments bool,
+    date TIMESTAMP DEFAULT now()
+);
 

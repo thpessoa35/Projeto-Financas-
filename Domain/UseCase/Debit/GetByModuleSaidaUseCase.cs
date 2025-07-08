@@ -1,6 +1,5 @@
 ﻿
 using idebitRepository;
-using iUserRepository;
 using ProjectFinancas.Controllers.Dtos;
 using sumvalue;
 

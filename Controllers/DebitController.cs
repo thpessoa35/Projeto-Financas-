@@ -1,20 +1,16 @@
-
 using getByModuleUseCase;
 using getBySaidaUseCase;
 using getDebitUseCase;
 using ihandleErrorcustom;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectFinancas.Controllers.Dtos;
-using user;
+using ProjectFinancas.Domain.UseCase;
 
-
-
-namespace Controllers
+namespace ProjectFinancas.Controllers
 {
-    [Authorize]
+    
     [ApiController]
-    [Route("/debit")]
+    [Route("debit")]
     public class DebitController : ControllerBase
     {
         private readonly CreateDebitUseCase _createDebitUseCase;
@@ -24,6 +20,7 @@ namespace Controllers
         private readonly GetByModuleEntradaUseCase _getByModuleUseCase;
         private readonly GetBySaidaModuleUseCase _getBySaidaModuleUseCase;
         private readonly IHandleErrorCustom _handleErrorCustom;
+        private readonly GetAll _getAll;
 
         public DebitController(
             CreateDebitUseCase createDebitUseCase,
@@ -32,10 +29,7 @@ namespace Controllers
             GetByEntradaUseCase getByEntradaUseCase,
             GetByModuleEntradaUseCase getByModuleUseCase,
             GetBySaidaModuleUseCase getBySaidaModuleUseCase,
-            IHandleErrorCustom handleErrorCustom
-
-
-        )
+            IHandleErrorCustom handleErrorCustom, GetAll getAll)
         {
             _createDebitUseCase = createDebitUseCase;
             _getDebitUseCase = getDebitUseCase;
@@ -44,14 +38,15 @@ namespace Controllers
             _getByModuleUseCase = getByModuleUseCase;
             _getBySaidaModuleUseCase = getBySaidaModuleUseCase;
             _handleErrorCustom = handleErrorCustom;
+            _getAll = getAll;
         }
 
-        [HttpPost("{Iduser}")]
-        public async Task<IActionResult> Create([FromBody] DebitDto data, string Iduser)
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] DebitDto data)
         {
             try
             {
-                data.Iduser = Iduser;
+                
                 await _createDebitUseCase.create(data);
                 return Ok(new { Message = "Debit created successfully" });
             }
@@ -61,13 +56,11 @@ namespace Controllers
             }
         }
 
-        [HttpGet("saida/{iduser}")]
-        public async Task<IActionResult> FindBySaida([FromRoute] string idUser, [FromBody] DataDto dataDto)
+        [HttpPost("saida")]
+        public async Task<IActionResult> FindBySaida([FromQuery] DataDto dataDto)
         {
             try
             {
-                dataDto.iduser = idUser;
-
                 var total = await _getBySaidaUseCase.FindBySaida(dataDto);
 
                 var response = new
@@ -85,13 +78,11 @@ namespace Controllers
             }
         }
 
-        [HttpGet("entrada/{iduser}")]
-        public async Task<IActionResult> FindByEntrada([FromRoute] string iduser, [FromBody] DataDto dataDto)
+        [HttpPost("entrada")]
+        public async Task<IActionResult> FindByEntrada([FromQuery] DataDto dataDto)
         {
             try
             {
-                dataDto.iduser = iduser;
-
                 var total = await _getByEntradaUseCase.FindByEntrada(dataDto);
 
                 var response = new
@@ -99,7 +90,7 @@ namespace Controllers
                     total.Get,
                     total.Total
                 };
-
+                
                 return Ok(response);
             }
             catch (Exception ex)
@@ -124,7 +115,7 @@ namespace Controllers
                 return (ActionResult)_handleErrorCustom.HandleException(ex);
             }
         }
-        [HttpGet("saida/{iduser}/{module}")]
+        [HttpPost("saida/{iduser}/{module}")]
         public async Task<IActionResult> GetBySaidaModuleUseCase([FromRoute] string iduser, [FromRoute] string module, [FromBody] DataDto dataDto)
         {
             try
@@ -135,6 +126,26 @@ namespace Controllers
 
 
                 return Ok(new { Message = total });
+            }
+            catch (Exception ex)
+            {
+                return (ActionResult)_handleErrorCustom.HandleException(ex);
+            }
+        }
+        
+        [HttpGet("entrada/get-all")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var debits = await _getAll.GetAllAsync();
+                var response = new
+                {
+                    debits.Get,
+                    debits.Total
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

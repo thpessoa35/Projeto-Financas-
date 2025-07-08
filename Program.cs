@@ -10,7 +10,6 @@ using iCreditRepository;
 using idebitRepository;
 using ihandleErrorcustom;
 using ijwtRepository;
-using iUserRepository;
 using jwtService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
@@ -19,6 +18,10 @@ using ProjectFinancas.Domain.Service.SendEmail;
 using ProjectFinancas.Domain.UseCase.EmailAuth;
 using ProjectFinancas.Infra;
 using System.Text;
+using ProjectFinancas.Domain.Repositories;
+using ProjectFinancas.Domain.UseCase;
+using ProjectFinancas.Domain.UseCase.Clients;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +41,7 @@ builder.Services.AddSingleton<JwtService>();
 builder.Services.AddSingleton<CreateDebitUseCase>();
 builder.Services.AddSingleton<CreateCreditUseCase>();
 builder.Services.AddSingleton<GetByModuleEntradaUseCase>();
+builder.Services.AddSingleton<CreateClientsUseCase>();
 builder.Services.AddSingleton<GetDebitDataUseCase>();
 builder.Services.AddSingleton<ConnectionPostgres>();
 builder.Services.AddSingleton<CreateUserUseCase>();
@@ -45,8 +49,8 @@ builder.Services.AddScoped<GetBySaidaUseCase>();
 builder.Services.AddScoped<GetByEntradaUseCase>();
 builder.Services.AddSingleton<GetBySaidaModuleUseCase>();
 builder.Services.AddSingleton<GetAllCreditUseCase>();
+builder.Services.AddSingleton<GetAll>();
 
-builder.Services.AddControllers();
 var config = builder.Configuration;
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -60,17 +64,33 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["SecretKey"]))
         };
     });
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+builder.Host.UseSerilog();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
+builder.Services.AddLogging();
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 var app = builder.Build();
-
+app.UseCors(); // Habilitar CORS
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
-
-
 app.UseHttpsRedirection();
 app.MapControllers();
 app.Run();

@@ -1,5 +1,6 @@
 ﻿using Dapper;
-using iUserRepository;
+using ProjectFinancas.Domain.Entities;
+using ProjectFinancas.Domain.Repositories;
 using user;
 
 namespace ProjectFinancas.Infra
@@ -27,6 +28,28 @@ namespace ProjectFinancas.Infra
                     var Query = "INSERT INTO users (id, name, email) VALUES(@id, @name, @email)";
 
                     await connection.ExecuteAsync(Query, data);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Erro ao criar usuario no banco de dados", ex);
+            }
+        }
+
+        public async Task CreateClient(Clients client)
+        {
+            try
+            {
+
+                using (var connection = _connectionPostgres.GetConnection())
+                {
+
+                    await connection.OpenAsync();
+
+                     const string query = "INSERT INTO clients (name, payments, date) VALUES(@name, @payments, @date)";
+                     
+                    await connection.ExecuteAsync(query, client);
                 }
             }
             catch (Exception ex)

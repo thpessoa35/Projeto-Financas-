@@ -1,5 +1,5 @@
 ﻿using exceptionEmail;
-using iUserRepository;
+using ProjectFinancas.Domain.Repositories;
 
 namespace ProjectFinancas.Domain.Validations.UserCase
 {

@@ -14,26 +14,25 @@ namespace debit
         public DateTime Date { get; set; }
         public string? Module { get; set; }
 
-   
+    
+        public Debit(){}
 
-        public Debit()
+        public Debit(decimal value, string? description, string type, string iduser, DateTime date, string? module)
         {
-            Iduser = string.Empty;
-            Value = decimal.Zero;
-            Id = string.Empty;
-            Description = string.Empty;
-            Type = string.Empty;
-            Date = DateTime.Now;
-            Module = string.Empty;  
-        }
-
-        public Debit(decimal value, string? description, string type, string iduser, string? module)
-        {
-            Iduser = iduser;    
+            Iduser = iduser;
             Value = value;
+            Id = string.Empty;
             Description = description;
             Type = type;
-            Module = module;
+            Date = date;
+            Module = module;  
+        }
+
+        public static Debit Create(decimal value, string? description, string type, string iduser, DateTime date, string? module)
+        {
+           return new Debit(value, description, type, iduser, date, module);
         }
     }
+    
 }
+

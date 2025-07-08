@@ -1,8 +1,8 @@
-﻿using iUserRepository;
-using ProjectFinancas.Controllers.Dtos;
+﻿using ProjectFinancas.Controllers.Dtos;
 using user;
 using System;
 using System.Threading.Tasks;
+using ProjectFinancas.Domain.Repositories;
 using ProjectFinancas.Domain.Validations.UserCase;
 
 namespace createUserUseCase

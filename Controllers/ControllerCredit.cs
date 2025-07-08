@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("/credit")]
     public class CreditController : ControllerBase

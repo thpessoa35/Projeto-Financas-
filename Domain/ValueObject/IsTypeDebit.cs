@@ -1,4 +1,4 @@
-using debit;
+namespace ProjectFinancas.Domain.ValueObject;
 
 public class TransactionType
 {
